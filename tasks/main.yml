@@ -1,0 +1,43 @@
+---
+# tasks file for nodetest
+- name: install nvm
+  apt:
+    name: "{{item}}"
+    state: present
+    update_cache: yes
+  with_items:
+    - npm
+    - nginx
+
+- name: copy files
+  copy:
+    src: files/app/default
+    dest: /etc/nginx/sites-available/
+    mode: 0644
+- name: copy files
+  copy:
+    src: files/app/server.js
+    dest: /var/www/html/app/
+    mode: 0644
+- name: copy json file
+  copy:
+    src: files/app/package.json
+    dest: /var/www/html/app/
+    mode: 0644
+- name: Install PM2
+  npm:
+    name: pm2
+    global: yes
+- name: Nginx Start
+  service:
+    name: nginx
+    state: stopped
+- name: install pm2 
+  shell: pm2 restart server.js
+  args:
+    chdir: /var/www/html/app
+- name: Nginx Start
+  service:
+    name: nginx
+    state: started
+
