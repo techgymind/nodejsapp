@@ -1,6 +1,6 @@
 ---
 # tasks file for nodetest
-- name: install nvm
+- name: install npm
   apt:
     name: "{{item}}"
     state: present
