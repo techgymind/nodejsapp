@@ -9,12 +9,12 @@
     - npm
     - nginx
 
-- name: copy files
+- name: copy nginx default files
   copy:
     src: files/app/default
     dest: /etc/nginx/sites-available/
     mode: 0644
-- name: copy files
+- name: copy node files
   copy:
     src: files/app/server.js
     dest: /var/www/html/app/
@@ -28,11 +28,11 @@
   npm:
     name: pm2
     global: yes
-- name: Nginx Start
+- name: Nginx Stop
   service:
     name: nginx
     state: stopped
-- name: install pm2 
+- name: Start pm2 
   shell: pm2 restart server.js
   args:
     chdir: /var/www/html/app
